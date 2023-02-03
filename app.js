@@ -187,7 +187,7 @@ function slideShow(){
         count = 0;
     }
     setTimeout(() => {
-        // slideShow()
+        slideShow()
     },15000);
 }
 

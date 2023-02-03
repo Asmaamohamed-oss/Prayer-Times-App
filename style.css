@@ -1,0 +1,156 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing:border-box ;
+}
+
+:root{
+    --main-color:rgb(23, 108, 236);
+    --main-bg-color:linear-gradient(45deg,rgb(19, 71, 151),rgb(12, 211, 184));
+}
+input,select{
+    font-family: inherit;
+    border: 0;
+    outline: 0;
+}
+
+body{
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background-position: center;
+    /* background-size: cover; */
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    transition: background  7s linear;
+}
+
+
+.container{
+    background-color: rgb(0 0 0 / 76%);
+    backdrop-filter: blur(4px);
+    color: rgb(299, 299, 299);
+    border-radius: 8px;
+    padding:20px 25px;
+    min-width: 350px;
+    /* max-width: 550px; */
+    margin: 0 10px;
+}
+
+@media (min-width:570px) {
+    .container{
+        width: 500px;
+    }
+}
+@media (min-width:768px) {
+    .container{
+        width: 690px;
+    }
+}
+@media (min-width:991px) {
+    .container{
+        width: 860px;
+    }
+}
+h1{
+    margin: 10px 0;
+    text-transform: uppercase;
+}
+@media (min-width:640px) {
+    h1{
+        font-size: 45px;
+        margin-bottom:20px;
+    }
+}
+h2.date-ele{
+    position: relative;
+    padding-bottom: 10px;
+    text-transform: capitalize;
+}
+
+h2.date-ele::before{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    content: "";
+    height: 2px;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+}
+
+h2 span.week-day{
+    margin-left: 30px;
+}
+
+.prayers{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(100px,1fr));
+    gap: 12px;
+    margin: 25px 0 40px;
+}
+@media (min-width:640px) {
+    .prayers{
+        grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+        margin: 30px 0 70px;
+    }
+}
+.prayers p{
+    display: flex;
+    text-transform: capitalize;
+    flex-direction: column;
+    min-height: 80px;
+    border-radius: 4px;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+}
+@media (min-width:640px) {
+    .prayers p{
+        min-height: 110px;
+    }
+}
+.prayers p span.prayer-name{
+    background-image: var(--main-bg-color);
+    padding: 2px;
+}
+
+
+.prayers p span.prayer-time{
+    font-weight: bold;
+    color: #111;
+    font-size: 18px;
+    margin: auto;
+}
+@media (min-width:640px) {
+    .prayers p span.prayer-name{
+        padding: 4px;
+        font-size: 17px;
+    }
+    .prayers p span.prayer-time{
+        font-size: 22px;
+    }
+}
+
+div.timing-info{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+label{
+    font-size: 18px;
+    color:var(--main-color);
+    font-weight: 600;
+}
+input,select{
+    width: 270px;
+    padding: 5px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: transparent;
+    border: 2px solid rgb(20, 213, 177);
+    color: rgb(255, 255, 255);
+}
+
+option{
+    background-color:rgba(0, 0,0,0.9);
+}

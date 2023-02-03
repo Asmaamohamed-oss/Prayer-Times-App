@@ -3,56 +3,100 @@
 //timingsByCity
 // http://api.aladhan.com/v1/timingsByCity?city=Cairo&country=Egypt
 
+/// Craete and Fill Options
+const cityInput = document.querySelector("#city-select")
+const dateInput = document.querySelector("#custom-date")
+
+let cities = [
+    {
+        cityName:"makkah",
+        countryName:"SA"
+    },
+    {
+        cityName:"madina",
+        countryName:"SA"
+    },
+    {
+        cityName:"cairo",
+        countryName:"egypt"
+    },
+    {
+        cityName:"istanbul",
+        countryName:"turkey"
+    },
+    {
+        cityName:"dubai",
+        countryName:"UAE"
+    },
+    {
+        cityName:"paris",
+        countryName:"france"
+    },
+    {
+        cityName:"london",
+        countryName:"endland"
+    },
+    {
+        cityName:"jerusalem",
+        countryName:"palastine "
+    },
+    {
+        cityName:"los angeles",
+        countryName:"America"
+    },
+    {
+        cityName:"new york",
+        countryName:"America"
+    },
+]
+cities.forEach(function(city){
+    const option = document.createElement('option')
+    option.value=city.cityName;
+    option.innerHTML=city.cityName;
+    cityInput.append(option)
+})
+
+
 const timesInfoEle = document.querySelector(".timing-info")
 const prayerTimesEle = document.querySelector(".prayer-times")
 const dateEle = document.querySelector(".date-ele")
 const cityEle = document.querySelector(".city-ele")
-//Inputs
-const cityInput = document.querySelector("#city")
-const dateInput = document.querySelector("#custom-date")
 
-
-
-//Today is date
-const monthes = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-const currentDay = new Date().getDate()
-const currentMonth =monthes [new Date().getMonth()]
-const currentYear = new Date().getFullYear()
 /////////
-let cityValue=[];
+
+let countryName;
+let cityName;
 let dateValue;
 cityInput.addEventListener("change",(e)=>{
-    cityValue = e.target.value.split("-");
-    const [city,country] = cityValue;
-
+    cityEle.innerHTML=e.target.value;
+    let currentCity = cities.find(city=>city.cityName === e.target.value);
+    cityName =currentCity.cityName;
+    countryName = currentCity.countryName;
+    
     if(cityInput.value !== "" && dateInput.value !== ""){
-        console.log("cityandtime");
         let [year,month,day] = dateValue;
-        getTimesByCityAndDate(city,country,year,month,day)
+        getTimesByCityAndDate(cityName,countryName,year,month,day)
     }else{
-        console.log("city");
-        getTimesByCity(city,country)
+        getTimesByCity(cityName,countryName)
     }
 })
 
-function getTimesByCity(city="Mecca",country="saudi aribia"){
+dateInput.addEventListener("change",(e)=>{
+    dateValue = e.target.value.split("-");
+    let [year,month,day] = dateValue;
+    getTimesByCityAndDate(cityName,countryName,year,month,day)
+})
+
+function getTimesByCity(city="makkah",country="SA"){
     const firstUrl = `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}`
     fetchTimes(firstUrl)
     
 }
-//Run at the start of app
+//Default city is Makkah
 getTimesByCity()
 
-dateInput.addEventListener("change",(e)=>{
-    if(dateInput.value !== ""){
-        dateValue = e.target.value.split("-");
-        let [year,month,day] = dateValue;
-        const [city,country] = cityValue;
-        getTimesByCityAndDate(city,country,year,month,day)
-    }
-})
 
-function getTimesByCityAndDate(city="mecca",country="saudi aribia",year,month,day){
+function getTimesByCityAndDate(city="makkah",country="SA",year,month,day){
     const secondUrl = `https://api.aladhan.com/v1/calendarByCity?city=${city}&country=${country}&month=${month}&year=${year}`
     //Modifies day from 01 => 1;
     if(day.startsWith("0")){
@@ -77,45 +121,42 @@ async function fetchTimes(url,day){
     }
 }
 
-const sunriseEle = document.querySelector(".sunrise span.prayer-time")
-const fajrEle = document.querySelector(".fajr span.prayer-time")
-const dhuhrEle = document.querySelector(".dhuhr span.prayer-time")
-const asrEle = document.querySelector(".asr span.prayer-time")
-const magharibEle = document.querySelector(".maghrib span.prayer-time")
-const ishaEle = document.querySelector(".isha span.prayer-time")
+
 
 function displayPrayerTimers(data,day){
     let timings;
-    cityEle.innerHTML=`${cityValue[0]== undefined ?"Mecca":cityValue[0]}`
+   
     if(day!==undefined){
-        const updatedDate = data[--day].date.readable.split(" ")
-        let [newDay,newMonth,newYear] = updatedDate;
-
-        if(newDay.startsWith("0")){
-            newDay = newDay.split('')[1]
-        }
-
+        //Prayer Times By City And Date
+        const updatedDate = data[--day].date.gregorian
+        setTimeAndDate(updatedDate)
         timings = data[day].timings
-        const weekDay = data[day].date.gregorian.weekday.en;
-        dateEle.innerHTML=`
-        <span>${newMonth} / ${newDay} / ${newYear}</span>  
-        <span class='week-day'>${weekDay}</span>
-        `
     }else{
-        // Defined Date and City at start 
+        //Prayer Times By City
+        const updatedDate_ = data.date.gregorian
+        setTimeAndDate(updatedDate_)
         timings = data.timings;
-        const weekDay = data.date.gregorian.weekday.en;
-        dateEle.innerHTML=`
-        <span>${currentMonth} / ${currentDay} / ${currentYear}</span>
-        <span class='week-day'>${weekDay}</span>
-        `
+        
     }
-    sunriseEle.innerHTML=changeDateFormat(timings.Sunrise.split(" ")[0])
-    fajrEle.innerHTML=changeDateFormat(timings.Fajr.split(" ")[0])
-    dhuhrEle.innerHTML=changeDateFormat(timings.Dhuhr.split(" ")[0])
-    asrEle.innerHTML= changeDateFormat(timings.Asr.split(" ")[0])
-    magharibEle.innerHTML=changeDateFormat(timings.Maghrib.split(" ")[0])
-    ishaEle.innerHTML=changeDateFormat(timings.Isha.split(" ")[0])
+    fillPrayerTime("sunrise-time",timings.Sunrise)
+    fillPrayerTime("fajr-time",timings.Fajr)
+    fillPrayerTime("dhuhr-time",timings.Dhuhr)
+    fillPrayerTime("asr-time",timings.Asr)
+    fillPrayerTime("maghrib-time",timings.Maghrib)
+    fillPrayerTime("isha-time",timings.Isha)
+}
+
+function setTimeAndDate(date){
+    const {day,month,weekday,year} = date;
+    dateEle.innerHTML=`
+    <span> ${day} ${month.en} ${year}</span>
+    <span class='week-day'>${weekday.en}</span>
+    `
+}
+
+function fillPrayerTime(id,time){
+    const ele = document.querySelector(`#${id} span.prayer-time`)
+    return ele.innerHTML = changeDateFormat(time.split(" ")[0])
 }
 
 function changeDateFormat(time){
@@ -146,7 +187,7 @@ function slideShow(){
         count = 0;
     }
     setTimeout(() => {
-        slideShow()
+        // slideShow()
     },15000);
 }
 

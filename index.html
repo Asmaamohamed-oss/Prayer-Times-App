@@ -11,31 +11,31 @@
 </head>
 <body>
     <div class="container">
-        <h1 class="city-ele"></h1>
+        <h1 class="city-ele">Makkah</h1>
         <div class="prayer-times">
             <h2 class="date-ele"></h2>
             <div class="prayers">
-                <p class="fajr">
+                <p id="fajr-time">
                     <span class="prayer-name">fajr</span>
                     <span class="prayer-time"></span>
                 </p>
-                <p class="sunrise">
+                <p id="sunrise-time">
                     <span class="prayer-name">sunrise</span>
                     <span class="prayer-time"></span>
                 </p>
-                <p class="dhuhr">
+                <p id="dhuhr-time">
                     <span class="prayer-name">dhuhr</span> 
                     <span class="prayer-time"></span>
                 </p>
-                <p class="asr">
+                <p id="asr-time">
                     <span class="prayer-name">asr</span> 
                     <span class="prayer-time"></span>
                 </p>
-                <p class="maghrib">
+                <p id="maghrib-time">
                     <span class="prayer-name">maghrib</span> 
                     <span class="prayer-time"></span>
                 </p>
-                <p class="isha">
+                <p id="isha-time">
                     <span class="prayer-name">isha</span> 
                     <span class="prayer-time"></span>
                 </p>
@@ -43,24 +43,10 @@
         </div>
         <div class="timing-info">
             <div class="selectes-city">
-                <!-- <label for="city">City:</label> -->
-                <select type="text" id="city">
-                    <!-- <option hidden value=""></option> -->
-                    <option value="mecca-saudi aribia">Mecca</option>
-                    <option value="cairo-egypt">Cairo</option>
-                    <option value="madina-saudi aribia">Madina</option>
-                    <option value="dubai-UAE">Dubai</option>
-                    <option value="rabat-moraco">Rabat</option>
-                    <option value="istanbul-turkey">Instanbul</option>
-                    <option value="paris-france">Paris</option>
-                    <option value="london-unitied kingdoom">London</option>
-                    <option value="jerusalem-palastine">Jerusalem</option>
-                    <option value="new york-America">New York</option>
-                    <option value="los angeles-America">Los Angeles</option>
+                <select type="text" id="city-select">
                 </select>   
             </div>
             <div>
-                <!-- <label for="custom-date">Date:</label> -->
                 <input type="date" id="custom-date">
             </div>
         </div>
